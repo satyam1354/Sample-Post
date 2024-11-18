@@ -7,6 +7,6 @@ Router.route('/login').post(Login)
 Router.route('/logout').get(Logout)
 Router.route('/profile/:id').get(getMyProfile)
 Router.route('/bookmark/:id').put(bookmark)
-Router.route('/follow/:id').post(follow)
+Router.route('/follow/:id').put(follow)
 
-module.exports = userRoute;
+module.exports = Router;
