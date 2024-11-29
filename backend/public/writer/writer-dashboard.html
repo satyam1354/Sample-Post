@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .news-content {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .news-content>div {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .news-content>div:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .news-content h2 {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            text-decoration: none;
+
+        }
+
+        .news-content h2 a span {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .news-content h2 a:hover span {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .news-content div:nth-child(2) {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .news-content div:nth-child(3) {
+            font-style: italic;
+            color: #95a5a6;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .news-content {
+                padding: 10px;
+            }
+
+            .news-content h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="header-container"></div>
+    <h2 style="">My Articles</h2>
+
+    <div class="news-content"></div>
+
+</body>
+
+<script>
+
+    //dynamically loading the header
+    async function loadHeader() {
+        try {
+            const response = await fetch('writer-header.html')
+            const headerHTML = await response.text();
+            document.querySelector('.header-container').innerHTML = headerHTML;
+        } catch (error) {
+            console.error("Error loading header: ", error)
+        }
+    }
+    loadHeader();      // Call the function to load the header
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const articleId = urlParams.get("id");  //'6739bb0cee11cfc66bf91cd5';
+    if (articleId) {
+        fetch(`/api/v1/article/authorarticles/${articleId}`)
+            .then((response) => {
+                console.log(response)
+                return response.json();
+            })
+            .then((response) => {
+                const articleContent = document.querySelector('.news-content')
+                response.articles.forEach(data => {
+                    //console.log(data)
+                    const maindiv = document.createElement('div');
+
+                    //title
+                    const title = document.createElement('div')
+                    const h2 = document.createElement('h2');
+                    const a1 = document.createElement('a');
+                    a1.innerHTML = `<span>${data.title}</span>`;
+                    h2.append(a1);
+                    title.appendChild(h2);
+                    //summary
+                    const summary = document.createElement('div')
+                    const a2 = document.createElement('a');
+                    a2.innerHTML = `<span>${data.summary}</span>`;
+                    summary.appendChild(a2);
+                    //author
+                    const author = document.createElement('div')
+                    author.innerHTML = "By ";
+                    const a3 = document.createElement('a');
+                    a3.innerHTML = `<span>${data.authorName}</span>`;
+                    author.appendChild(a3);
+                    const hr = document.createElement('hr')
+                    //
+                    maindiv.append(title, summary, author, hr);
+                    maindiv.addEventListener('click', (e) => {
+                        window.location.href = `news.html?id=${data._id}`
+                    })
+
+                    articleContent.append(maindiv)
+                });
+            })
+
+            .catch((err) => {
+                console.error('Error fetching article data:', err);
+                document.querySelector('.news-content').innerHTML = `<p>Error fetching article data.</p>`;
+            });
+    } else {
+        document.querySelector('.news-content').innerHTML = `<p>No article ID specified in the URL.</p>`;
+    }
+</script>
+
+
+</html>

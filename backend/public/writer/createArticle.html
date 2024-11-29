@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write an article</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select,
+        button {
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-container"></div>
+
+    <h1>Write an Article</h1>
+    <form id="article-form" enctype="multipart/form-data">
+        <!--Title-->
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" placeholder="Enter article title" required>
+        <!--summary-->
+        <label for="summary">Summary:</label>
+        <textarea id="summary" name="summary" placeholder="Write a brief summary" rows="3" required></textarea>
+        <!--content-->
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" placeholder="Write an article content" rows="10" required></textarea>
+        <!-- images -->
+         <label for="images">Images</label>
+         <input type="image" id="images" name="images" multiple>
+        <!--Tags-->
+        <label for="tags">Tags (comma Separated): </label>
+        <input type="text" id="tags" name="tags" placeholder="e.g. AI, Technology, future">
+        <!--submit-form-->
+        <button type="submit">Submit Article</button>
+    </form>
+
+    <script>
+        //dynamically loading the header
+        async function loadHeader() {
+            try {
+                const response = await fetch('writer-header.html')
+                const headerHTML = await response.text();
+                document.querySelector('.header-container').innerHTML = headerHTML;
+            } catch (error) {
+                console.error("Error loading header: ", error)
+            }
+        }
+        loadHeader();      // Call the function to load the header
+
+
+        const form = document.querySelector('#article-form')
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            //collecting form data
+            const formData = {
+                title: document.querySelector('#title').value,
+                summary: document.querySelector('#summary').value,
+                content: document.querySelector('#content').value,
+                tags: document.querySelector('#tags').value.split(',').map(tag => tag.trim()),
+                author: "6739bb0cee11cfc66bf91cd5",
+                authorName: "satyam kumar"
+            }
+            //sending the data to the backend api
+            try {
+                fetch('/api/v1/article/create', {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }).then(response => {
+                    return response.json()
+                }).then(response => {
+                    alert("Article submitted successsfully");
+                    form.reset();
+                }).catch(err => {
+                    alert('Error:', err.message)
+                })
+            } catch (error) {
+                console.error("Error in submitting article:", error)
+                alert("an error occur while submitting the article")
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #login-form {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        #login-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        #login-form input[type="email"],
+        #login-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        #login-form input[type="email"]:focus,
+        #login-form input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+
+        #login-form input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #login-form input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form id="login-form">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+        <label for="password">Password</label>
+        <input type="text" id="password" name="password" required />
+        <input type="submit" value="submit">
+    </form>
+    <script>
+        document.querySelector('#login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const obj = {
+                email: document.querySelector('#email').value,
+                password: document.querySelector('#password').value
+            }
+            fetch('/api/v1/user/login', {
+                method: 'POST',
+                body: JSON.stringify(obj),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                console.log(data)
+                if (data.user.role) {
+                    // Save token to localStorage (or cookie)
+                    localStorage.setItem('authToken', data);
+
+                    //redirecting based on roles
+                    switch (data.user.role) {
+                        case 'reader':
+                            window.location.href = '/';
+                            break;
+                        case 'writer':
+                            window.location.href = `/writer-dashboard.html?id=${data.user}`;
+                            break;
+                        case 'admin':
+                            window.location.href = '/admin-dashboard';
+                            break;
+                    }
+                } else {
+                    alert(data.user.role)
+                }
+            }).catch(err => {
+                console.log('Error', err)
+            })
+        })
+    </script>
+</body>
+
+</html>

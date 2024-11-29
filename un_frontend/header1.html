@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Layout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Pre-container styling */
+        .pre-container {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exploreSearch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btnExplore {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .navIcon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #3498db;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+
+        .searchLink a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .searchLink a:hover {
+            text-decoration: underline;
+        }
+
+        .date-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .hDate,
+        .hWeather {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .cTemp {
+            font-weight: bold;
+        }
+
+        /* Mid-container styling */
+        .mid-container {
+            flex: 1;
+            text-align: center;
+        }
+
+        .mid-container a {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .mid-container a:hover {
+            color: #3498db;
+        }
+
+        /* Post-container styling */
+        .post-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .links .icon a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .links .icon a:hover {
+            text-decoration: underline;
+        }
+
+        .signin {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .signin .login .signin,
+        .signin .login .afterLogin {
+            cursor: pointer;
+        }
+
+        .signin .isActive .signin {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .national-international {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .national-international a {
+            text-decoration: none;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .national-international a:hover {
+            color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .post-container {
+                align-items: center;
+            }
+
+            .links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .national-international {
+                justify-content: center;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header" class="header">
+        <div class="container">
+            <!-- Pre-container -->
+            <div class="pre-container">
+                <div class="exploreSearch">
+                    <div class="btnExplore">
+                        <span class="navIcon"></span>
+                        <strong>Explore</strong>
+                    </div>
+                    <div class="searchLink">
+                        <a href="">Search</a>
+                    </div>
+                </div>
+                <div class="date-weather">
+                    <div class="hDate">Thursday, Nov 21, 2024</div>
+                    <div class="hWeather">New Delhi <span class="cTemp">24</span><sup>o</sup>C</div>
+                </div>
+            </div>
+
+            <!-- Mid-container -->
+            <div class="mid-container">
+                <a href="">The Sample Times</a>
+            </div>
+
+            <!-- Post-container -->
+            <div class="post-container">
+                <div class="links">
+                    <!-- <a href="">Subscribe</a> -->
+                    <div class="game icon">
+                        <a href="">Games</a>
+                    </div>
+                    <div class="epaper icon">
+                        <a href="">E-Paper</a>
+                    </div>
+                    <div class="epaper icon">
+                        <a href="">Week Magazine</a>
+                    </div>
+                    <div class="signin">
+                        <div class="login isActive">
+                            <div class="signin">Sign In</div>
+                            <div class="afterLogin">My Account</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="national-international">
+                    <div class="national">
+                        <a href="">National</a>
+                    </div>
+                    <div class="international">
+                        <a href="">International</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+
+</html>

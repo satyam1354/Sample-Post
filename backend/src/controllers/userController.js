@@ -57,7 +57,7 @@ const User = require('../models/user.model.js')
             }) 
         }
          // Store user in session
-        req.session.user = {id:user._id, name:user.name, email:user.email}
+        req.session.user = {id:user._id, name:user.name, email:user.email, role:user.role}
         return res.status(200).json({
             message: "user logged in successfully",
             user: req.session.user,
